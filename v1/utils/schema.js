@@ -21,13 +21,6 @@ const categoryObjectSchema = Joi.object({
         'any.required': 'The type of the category is required.',
         'string.base': 'The type must be a string.',
       }).label("Category type"),
-    images: Joi.string()
-      .required()
-      .messages({
-        'any.required': 'The image link for the category is required.',
-        'string.uri': 'The image link must be a valid URI.',
-        'string.base': 'The image link must be a string.',
-      }).label("Image URL"),
   });
   export const categoryArraySchema =  Joi.object({
         items:Joi.array()

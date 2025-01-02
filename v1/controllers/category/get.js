@@ -8,7 +8,7 @@ export const getCategories = async (req, res) => {
     const categories = await CommonModel.find({pk:"CATEGORY#GENERAL"},{details:1,_id:1});
     const prefixlink = `https://${process.env.BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/`
     const customeResponse = categories.map((obj)=>{
-      return {...obj,images:prefixlink+obj.details.images}
+      return {_id:obj._id,...obj.details,images:prefixlink+obj.details.images}
     })
     res.status(200).json({
       status: "success",

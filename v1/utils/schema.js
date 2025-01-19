@@ -44,7 +44,6 @@ export const   signupSendOtpSchema = Joi.object({
     .trim()
     .min(3)
     .max(50)
-    .required()
     .label("user firstName"),
 
   lastName: Joi.string()
@@ -52,7 +51,6 @@ export const   signupSendOtpSchema = Joi.object({
     .trim()
     .min(3)
     .max(50)
-    .required()
     .label("user lastName"),
 
   email: Joi.string()
@@ -67,9 +65,7 @@ export const   signupSendOtpSchema = Joi.object({
 
   dob: Joi.string()
     .pattern(/^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/)
-    .required()
     .label("dob"),
-    password:Joi.string().min(8).max(20).required().label("password")
 });
 
 

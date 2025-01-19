@@ -1,6 +1,6 @@
 import Joi from "joi";
 
-const categoryObjectSchema = Joi.object({
+export const categoryObjectSchema = Joi.object({
     name: Joi.string()
       .pattern(/^[a-zA-Z]+( [a-zA-Z]+)?$/, 'valid name')
       .required()

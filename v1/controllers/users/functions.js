@@ -6,7 +6,7 @@ import bcrypt from "bcrypt"
 export const signupSendOtp = async(req,res,next)=>{
     
      try {
-          const {firstName,lastName,email,mobile,dob,password} = req.body;
+          const {firstName="",lastName="",email,mobile,dob="",password=""} = req.body;
           const user = await CommonModel.find({pk:mobile})
           
           if(user&&user.length>0){
@@ -44,7 +44,7 @@ export const verifySignupOtp = async (req,res,next)=>{
        }
        
        const userDetail = JSON.parse(response);
-       let password = await bcrypt.hash(userDetail.password,12);
+      
        const userEntry = {
           pk:mobile,
           sk:userDetail.email,
@@ -62,7 +62,9 @@ export const verifySignupOtp = async (req,res,next)=>{
 
        const createResponse = await CommonModel.create(userEntry);
        if(!createResponse){
-
+           throw {
+               message:"mongodb query error"
+           }
        }
        const {_id,type,roles,details} = createResponse
        const token = jwtSignIn({_id})
@@ -86,7 +88,6 @@ export const verifySignupOtp = async (req,res,next)=>{
 export const loginOtp = async (req,res,next)=>{
        try {
           const {identity}  = req.body;
-          console.log(identity,"WWWWWWWWWWWWWWW")
           const response =  await CommonModel.find({$or:[{pk:identity},{sk:identity}]});
           if(!response||response.length==0 ){
                throw {
@@ -99,7 +100,6 @@ export const loginOtp = async (req,res,next)=>{
             const value = JSON.stringify({email:response[0].sk,mobile:response[0].pk})
            const redisResponse = await redisInstance.set(key,value,"EX",300);
            const getValue = await redisInstance.get(key)
-          console.log("ZZZZZZZZZZZZZZ",key,value,redisResponse,JSON.parse(getValue))
           return res.status(200).json({
               otp
            })
@@ -117,7 +117,6 @@ export const verifyLoginOtp = async (req,res,next)=>{
           const key = `${otp}:login`
          let value = await  redisInstance.get(key);
          value = JSON.parse(value)
-         console.log(value,"WWWWWWWWWWWWWWWWWW",key,value.email,value.mobile)
         if(!value||value.email!==identity&&value.mobile!==identity){
             throw {
                message:"Invalid otp"

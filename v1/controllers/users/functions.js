@@ -97,7 +97,7 @@ export const loginOtp = async (req,res,next)=>{
           const otp = generateOtp()
 
           const key = `${otp}:login`;
-            const value = JSON.stringify({email:response[0].sk,mobile:response[0].pk})
+            const value = JSON.stringify({_id:response[0]._id,email:response[0].sk,mobile:response[0].pk})
            const redisResponse = await redisInstance.set(key,value,"EX",300);
            const getValue = await redisInstance.get(key)
           return res.status(200).json({

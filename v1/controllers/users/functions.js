@@ -7,11 +7,11 @@ export const signupSendOtp = async(req,res,next)=>{
     
      try {
           const {firstName="",lastName="",email,mobile,dob="",password=""} = req.body;
-          const user = await CommonModel.find({pk:mobile})
+          const user = await CommonModel.find({$or:[{pk:mobile},{sk:email}]})
           
           if(user&&user.length>0){
                throw{
-                    message:"This number is  registerd with us .Please login or use another number to signin"
+                    message:"This number or email is  registerd with us .Please login or use another number and email to signin"
                }
           }
           

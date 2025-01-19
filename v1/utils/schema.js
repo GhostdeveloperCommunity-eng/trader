@@ -22,6 +22,7 @@ const categoryObjectSchema = Joi.object({
         'string.base': 'The type must be a string.',
       }).label("Category type"),
   });
+
   export const categoryArraySchema =  Joi.object({
         items:Joi.array()
         .items(categoryObjectSchema)
@@ -34,5 +35,82 @@ const categoryObjectSchema = Joi.object({
           'array.max': 'Maximum 20 category object is possible at once.',
           'any.required': 'The array of categories is required.',
         })
-    })
-  
+  })
+
+
+export const   signupSendOtpSchema = Joi.object({
+  firstName: Joi.string()
+    .pattern(/^[A-Za-z\s]+$/)
+    .trim()
+    .min(3)
+    .max(50)
+    .required()
+    .label("user firstName"),
+
+  lastName: Joi.string()
+    .pattern(/^[A-Za-z\s]+$/)
+    .trim()
+    .min(3)
+    .max(50)
+    .required()
+    .label("user lastName"),
+
+  email: Joi.string()
+    .email()
+    .required()
+    .label("user email"),
+
+  mobile: Joi.string()
+    .pattern(/^\+\d{1,4}-\d{10}$/)
+    .required()
+    .label("user mobile number"),
+
+  dob: Joi.string()
+    .pattern(/^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/)
+    .required()
+    .label("dob"),
+    password:Joi.string().min(8).max(20).required().label("password")
+});
+
+
+export const verifySignupOtpSchema = Joi.object({
+  mobile: Joi.string()
+    .pattern(/^\+\d{1,4}-\d{10}$/)
+    .required()
+    .label("user mobile number"),
+    otp:Joi.string().length(6).required().label("otp")
+})
+
+
+export const loginSendOtpSchema = Joi.object({
+  identity: Joi.alternatives().try(
+      Joi.string()
+          .pattern(/^\+\d{1,4}-\d{10}$/)
+          .message('identity must be a 10-digit number'),
+      Joi.string()
+          .email({ tlds: { allow: false } })
+          .message('identity must be a valid email address')
+  ).required().messages({
+      'alternatives.any': 'identity must be either a 10-digit number or a valid email address',
+      'any.required': 'Identity is required'
+  })
+})
+
+export const loginVerifyOtpSchema = Joi.object({
+  identity: Joi.alternatives().try(
+      Joi.string()
+          .pattern(/^\+\d{1,4}-\d{10}$/)
+          .message('identity must be a 10-digit number'),
+      Joi.string()
+          .email({ tlds: { allow: false } })
+          .message('identity must be a valid email address')
+  ).required().messages({
+      'alternatives.any': 'identity must be either a 10-digit number or a valid email address',
+      'any.required': 'Identity is required'
+  }),
+  otp:Joi.string().length(6).required().label("otp")
+})
+
+
+
+

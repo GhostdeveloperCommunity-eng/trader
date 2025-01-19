@@ -33,8 +33,8 @@ export const insertCategories = async (req,res)=>{
      }
 
 
-      const categoryToInsert = [];
-      const bucketName = process.env.BUCKET_NAME;
+    const categoryToInsert = [];
+    const bucketName = process.env.BUCKET_NAME;
     const folderName = process.env.S3_FOLDER_NAME;
     
     // Use Promise.allSettled to handle all file uploads
@@ -91,7 +91,7 @@ export const insertCategories = async (req,res)=>{
 
 export const uploadImage = async (req, res) => {
   try {
-   
+    if(req.files.length==0)throw {message:"please send image"}
     const bucketName = process.env.BUCKET_NAME;
     const folderName = process.env.S3_FOLDER_NAME;
     

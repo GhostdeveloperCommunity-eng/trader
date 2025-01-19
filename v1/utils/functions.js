@@ -1,4 +1,6 @@
 import { S3Client,PutObjectCommand } from "@aws-sdk/client-s3";
+import jwt from "jsonwebtoken"
+
 const validateSchema = async(schema,object)=>{
     try {
         const options = {
@@ -91,4 +93,23 @@ export const parseFormData = (...args) => {
         });
       }
     };
-  };
+};
+
+
+export const generateOtp = ()=>{
+  let a=  Math.random()*1000000
+    a = Math.floor(a)
+  a = a+""
+  if(a.length<6){
+     a = a.padStart(6,"0")
+  }
+  
+  return a
+}
+
+export const jwtSignIn = (obj)=>{
+  
+    const token = jwt.sign(obj,process.env.JWT_SECRET,{expiresIn:process.env.JWT_EXPIRE_IN});
+ 
+  return token
+}

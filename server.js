@@ -1,8 +1,11 @@
+import envObject from "./config.js"
+
 import mongoose from "mongoose";
-import dotenv from "dotenv"
-dotenv.config({ path: './config.env' });
+
 import app from "./app.js"
 
+
+console.log(process.env.DATABASE)
 
 
 const DB = process.env.DATABASE.replace(
@@ -14,7 +17,7 @@ mongoose
   .connect(DB)
   .then((con) => {
   
-   
+  
   })
   .catch((err) =>{
     console.log(err)

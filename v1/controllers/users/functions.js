@@ -37,6 +37,7 @@ export const verifySignupOtp = async (req,res,next)=>{
           const {otp,mobile} = req.body
         const key = `${mobile}:${otp}:signup}`
        const response = await  redisInstance.get(key)
+    
        if(!response){
           throw {
                message :"Invalid otp Or mobile number                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       "
@@ -57,7 +58,6 @@ export const verifySignupOtp = async (req,res,next)=>{
                email:userDetail.email,
                dob:userDetail.dob
           },
-          password
        } 
 
        const createResponse = await CommonModel.create(userEntry);
@@ -79,7 +79,7 @@ export const verifySignupOtp = async (req,res,next)=>{
        
      } catch (error) {
           res.status(400).json({
-               message:"Invalid otp"
+               message:error.message
           })
      }
 }

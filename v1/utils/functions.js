@@ -28,8 +28,9 @@ export const hofSchemaValidation = (schema)=>{
           req.body = validateBody
           next()
         } catch (error) {
-            res.status(400).json({
-                status:"Fail",
+            res.status(200).json({
+                code:0,
+                data:null,
                 message:error.message
             })
         }
@@ -88,7 +89,9 @@ export const parseFormData = (...args) => {
         }
         next(); // Move to the next middleware after processing all properties
       } catch (error) {
-        res.status(400).json({
+        res.status(200).json({
+          code:0,
+          data:null,
           message: error.message,
         });
       }

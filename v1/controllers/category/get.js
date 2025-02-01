@@ -11,15 +11,15 @@ export const getCategories = async (req, res) => {
       return {_id:obj._id,...obj.details,images:prefixlink+obj.details.images}
     })
     res.status(200).json({
-      status: "success",
+      code:1,
       message: "Categories fetched successfully",
       data: customeResponse,
     });
   } catch (error) {
-    res.status(500).json({
-      status: "error",
-      message: "Error fetching categories",
-      error: error.message,
+    res.status(200).json({
+      code:0,
+      message: Error `error fetching categories:${error.message}`,
+      data:[]
     });
   }
 };
@@ -29,7 +29,7 @@ export const insertCategories = async (req,res)=>{
   try {
     
      if(!req.files||req.files.length!==req.body.items.length){
-       throw {message:"Number of photos is not equal to "}
+       throw {message:"Number of photos is not equal to numbers of Category "}
      }
 
 
@@ -75,14 +75,16 @@ export const insertCategories = async (req,res)=>{
         details:{...obj.details,images:prefixlink+obj.details.images}
       }
      })
-    res.status(201).json({
-      status:"succcess",
-      data:customeResponse
+    res.status(200).json({
+      code:1,
+      data:customeResponse,
+      message:"Category inserted Successfully"
     })
   } catch (error) {
-    res.status(500).json({
-      status:"Fail",
-      message:error.message
+    res.status(200).json({
+      code:0,
+      data:null,
+      message:`error while inserting Category:${error.message}`
     })
   }
 }
@@ -116,7 +118,7 @@ export const uploadImage = async (req, res) => {
       }
     })
     res.status(200).json({
-      status:"success",
+        code:1,
       message:"Images uploaded successfylly",
       data
     })
@@ -125,7 +127,12 @@ export const uploadImage = async (req, res) => {
 
   } catch (error) {
     console.error("Error uploading files:", error);
-    return res.status(500).json({ error: error.message });
+    return res.status(200).json({ 
+      data:[],
+      code:0,
+      message:`error while uploading image ${error.message}`
+
+    });
   }
 };
 

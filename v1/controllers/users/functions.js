@@ -21,11 +21,15 @@ export const signupSendOtp = async(req,res,next)=>{
           const response = await redisInstance.set(key,value,"EX",300);
           console.log("Redis Response",response)
            res.status(200).json({
-               otp
+               code:1,
+               data:{otp},
+               message:"This is your otp"
            })
            return
      } catch (error) {
-        res.status(400).json({
+        res.status(200).json({
+          code:0,
+          data:null,
           message:error.message||"SOMETHING WENT WRONG"
         })
      }
@@ -73,13 +77,18 @@ export const verifySignupOtp = async (req,res,next)=>{
           user:{_id,type,roles,details}
        }
 
-       return res.status(201).json({
-          data
+       return res.status(200).json({
+          code:1,
+          data,
+          message:"otp verified successfully"
        })
        
      } catch (error) {
-          res.status(400).json({
-               message:error.message
+          res.status(200).json({
+               code :0,
+               message:`${error.message||"SOMETHING WENT WRONG"}`,
+               data:null
+
           })
      }
 }
@@ -101,10 +110,14 @@ export const loginOtp = async (req,res,next)=>{
            const redisResponse = await redisInstance.set(key,value,"EX",300);
            const getValue = await redisInstance.get(key)
           return res.status(200).json({
-              otp
+               code:1,
+               message:"This is your otp",
+              data:{otp}
            })
        } catch (error) {
-          return res.status(400).json({
+          return res.status(200).json({
+               code:0,
+               data:null,
                message:error.message||"SOMETHING WENT WRONG"
           })
        }
@@ -125,13 +138,17 @@ export const verifyLoginOtp = async (req,res,next)=>{
 
         const token = jwtSignIn({_id:value._id})
         return res.status(200).json({
+          code:1,
+          message:"otp has been verified",
           data:{
                token
           }
         })
      } catch (error) {
-          res.status(400).json({
-               message:error.message
+          res.status(200).json({
+               code : 0,
+               data:null,
+               message:error.message||"SOMETHING WENT WRONG"
           })
      }
      

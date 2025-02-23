@@ -16,9 +16,10 @@ export const createSellerProduct = async (req, res, next) => {
     });
 
     if (response && response.length !== 0) {
+      const masterProduct = await CommonModel.findById(masterProductId);
       res.send({
         code: 1,
-        data: response,
+        data: { sellerProduct: response, masterProduct },
         message: "This is product already exist with us",
       });
       return;
@@ -27,7 +28,7 @@ export const createSellerProduct = async (req, res, next) => {
     for (const lot of lots) {
       if (new Date(lot.expiry) <= new Date(lot.mfg)) {
         throw {
-          message: `one of your varient is expire with this varientId ${varientIds}`,
+          message: `one of your varient is expire with this varientId ${lot.varientId}`,
         };
       }
       lot.id = uuidV4();

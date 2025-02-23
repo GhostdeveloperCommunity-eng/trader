@@ -14,10 +14,11 @@ export const createSellerProduct = async (req, res, next) => {
     const response = await CommonModel.find({
       $where: { pk: "SELLER_PRODUCT", sk: masterProductId, sk1: req._user._id },
     });
+
     if (response && response.length !== 0) {
       res.send({
         code: 1,
-        data: null,
+        data: response,
         message: "This is product already exist with us",
       });
       return;

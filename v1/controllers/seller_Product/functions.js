@@ -51,6 +51,11 @@ export const createSellerProduct = async (req, res, next) => {
       }
     );
 
+    if (masterProduct.product_detail.varients == 0) {
+      throw {
+        message: "wrong varients ids",
+      };
+    }
     return res.send({
       code: 1,
       data: {

@@ -20,7 +20,7 @@ export const createSellerProduct = async (req, res, next) => {
       res.send({
         code: 1,
         data: { sellerProduct: response, masterProduct },
-        message: "This is product already exist with us",
+        message: "This is product already exist with you",
       });
       return;
     }

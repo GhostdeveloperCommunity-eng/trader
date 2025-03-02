@@ -1,4 +1,4 @@
-import CommonModel from "../../model/commonmodel";
+import CommonModel from "../../model/commonmodel.js";
 import { v4 as uuidV4 } from "uuid";
 export const createLot = async (req, res) => {
   try {
@@ -160,3 +160,5 @@ export const createLot = async (req, res) => {
     });
   }
 };
+
+export const updateLot = (req, res) => {};

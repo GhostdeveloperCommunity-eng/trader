@@ -114,14 +114,18 @@ export const loginVerifyOtpSchema = Joi.object({
   otp: Joi.string().length(6).required().label("otp"),
 });
 
+const sizeMrpSchema = Joi.object({
+  size: Joi.string().required(), // Size as a required string
+  mrp: Joi.number().positive().required(), // MRP as a required positive number
+});
+
+// Define varientSchema with updated structure
 const varientSchema = Joi.object({
   name: Joi.string().required(),
   slug: Joi.string().allow("").required(), // Allow empty string but required
   images: Joi.array().items(Joi.string()).min(1).required(), // At least one image, must be a valid URL
-  mrp: Joi.array().items(Joi.number().positive()).required(), // Array of positive numbers
-  sizes: Joi.array().items(Joi.string()).required(), // Array of strings for sizes
+  sizeMrp: Joi.array().items(sizeMrpSchema).min(1).required(), // Array of size-mrp objects
 });
-
 // Define the main schema
 export const masterProductSchema = Joi.object({
   categoryId: Joi.string().required(),

@@ -22,6 +22,9 @@ export const createMasterProduct = async (req, res, next) => {
     let varientSizes = [];
     for (let obj of varients) {
       obj.id = uuidV4();
+      obj.sizeMrp.forEach((sizeWithPriceObj) =>
+        varientSizes.push(sizeWithPriceObj.size)
+      );
       varientNames.push(obj.name);
       varientSizes = [...varientSizes, ...obj.sizes];
     }

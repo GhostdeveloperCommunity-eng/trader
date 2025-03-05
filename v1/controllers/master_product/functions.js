@@ -10,7 +10,7 @@ export const createMasterProduct = async (req, res, next) => {
         message: "Invalid Category",
       };
     }
-    const { pk } = { category };
+    const { pk } = category;
     if (pk !== "CATEGORY#GENERAL") {
       throw {
         status: 400,
@@ -26,7 +26,6 @@ export const createMasterProduct = async (req, res, next) => {
         varientSizes.push(sizeWithPriceObj.size)
       );
       varientNames.push(obj.name);
-      varientSizes = [...varientSizes, ...obj.sizes];
     }
     varientNames = [...new Set(varientNames)];
     varientSizes = [...new Set(varientSizes)];

@@ -64,9 +64,7 @@ export const createMasterProduct = async (req, res, next) => {
 
 export const getAllMasterProduct = async (req, res, next) => {
   try {
-    const response = await CommonModel.find({
-      $where: { pk: "MASTER#PRODUCT" },
-    });
+    const response = await CommonModel.find({ pk: "MASTER#PRODUCT" });
     res.status(200).json({
       code: 1,
       data: response,

@@ -19,13 +19,13 @@ export const categoryObjectSchema = Joi.object({
       "string.base": "The description must be a string.",
     })
     .label("description"),
-  type: Joi.string()
+  subCategory: Joi.string()
     .required()
     .messages({
-      "any.required": "The type of the category is required.",
-      "string.base": "The type must be a string.",
+      "any.required": "The subCategory of the category is required.",
+      "string.base": "The subCategory must be a string.",
     })
-    .label("Category type"),
+    .label("subCategory"),
 });
 
 export const categoryArraySchema = Joi.object({
@@ -100,7 +100,9 @@ export const loginVerifyOtpSchema = Joi.object({
     .try(
       Joi.string()
         .pattern(/^\+\d{1,4}-\d{10}$/)
-        .message("identity must be a 10-digit number"),
+        .message(
+          "identity must be a 10-digit number with Country code like +91-1234567890"
+        ),
       Joi.string()
         .email({ tlds: { allow: false } })
         .message("identity must be a valid email address")

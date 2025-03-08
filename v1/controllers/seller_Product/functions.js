@@ -12,7 +12,9 @@ export const createSellerProduct = async (req, res, next) => {
 
     // 2.) validate seller product if it is available or not with same master_product
     const response = await CommonModel.find({
-      $where: { pk: "SELLER_PRODUCT", sk: masterProductId, sk1: req._user._id },
+      pk: "SELLER_PRODUCT",
+      sk: masterProductId,
+      sk1: req._user._id,
     });
 
     if (response && response.length !== 0) {

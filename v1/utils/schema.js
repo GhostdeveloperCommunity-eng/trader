@@ -123,6 +123,7 @@ const sizeMrpSchema = Joi.object({
 const varientSchema = Joi.object({
   name: Joi.string().required(),
   slug: Joi.string().allow("").required(), // Allow empty string but required
+  gender: Joi.string().required(), // Allow empty string but required
   images: Joi.array().items(Joi.string()).min(1).required(), // At least one image, must be a valid URL
   sizeMrp: Joi.array().items(sizeMrpSchema).min(1).required(), // Array of size-mrp objects
 });

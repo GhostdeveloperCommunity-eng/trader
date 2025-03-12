@@ -38,6 +38,11 @@ export const createSeller = async (req, res, next) => {
     }
 
     const response = await CommonModel.create(seller);
+    const updateUserAsSeller = await CommonModel.findByIdAndUpdate(
+      req._user.id,
+      { $addToSet: { roles: "seller" } },
+      { new: true }
+    );
     const data = {
       userId: req._user._id,
       pinCodes,

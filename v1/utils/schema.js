@@ -223,11 +223,6 @@ export const sellerProductSchema = Joi.object({
   masterProductId: Joi.string().required().messages({
     "any.required": "Master Product ID is required",
   }),
-  deliveryPins: Joi.array()
-    .items(Joi.string().pattern(/^\d{6}$/))
-    .messages({
-      "string.pattern.base": "Each delivery pin must be a 6-digit number",
-    }),
   lots: Joi.array().items(lotSchema).min(1).required().messages({
     "array.min": "At least one lot is required",
   }),

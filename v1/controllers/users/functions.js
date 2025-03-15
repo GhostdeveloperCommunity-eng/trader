@@ -126,7 +126,7 @@ export const loginOtp = async (req, res, next) => {
     const value = JSON.stringify({
       _id: response[0]._id,
       email: response[0].sk,
-      mobile: response[0].pk,
+      mobile: response[0].sk1,
     });
     const redisResponse = await redisInstance.set(key, value, "EX", 300);
     const getValue = await redisInstance.get(key);
@@ -187,13 +187,18 @@ export const verifyLoginOtp = async (req, res, next) => {
       };
     }
 
+    const response = await CommonModel.find({
+      pk: "USER",
+      $or: [{ sk: identity }, { sk1: identity }],
+    });
+
     const token = jwtSignIn({ _id: value._id });
     return res.status(200).json({
       code: 1,
       message: "otp has been verified",
       data: {
         token,
-        user: value,
+        user: response[0],
       },
     });
   } catch (error) {

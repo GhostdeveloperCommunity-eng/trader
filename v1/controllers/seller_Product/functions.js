@@ -68,7 +68,7 @@ export const createSellerProduct = async (req, res, next) => {
       });
       return;
     }
-    const varientIds = [];
+    let varientIds = [];
     for (const lot of lots) {
       if (new Date(lot.expiry) <= new Date(lot.mfg)) {
         throw {
@@ -78,7 +78,7 @@ export const createSellerProduct = async (req, res, next) => {
       lot.id = uuidV4();
       varientIds.push(lot.varientId);
     }
-
+    varientIds = [...new Set(varientIds)];
     const masterProduct = await CommonModel.aggregate([
       {
         $match: { _id: new ObjectId(masterProductId) },

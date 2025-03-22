@@ -78,7 +78,7 @@ export const createLot = async (req, res) => {
           categoryId: "$sk",
           varientNames: "$sk1",
           varientSize: "$sk2",
-          brandName: "$sk3",
+          brand: "$sk3",
           product_name: "$sk4",
           varients: 1,
         },

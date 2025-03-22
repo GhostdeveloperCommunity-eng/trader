@@ -17,7 +17,7 @@ export const createMasterProduct = async (req, res, next) => {
         message: "Invalid Category",
       };
     }
-    const { brandName, name, varients } = req.body;
+    const { brand, name, varients } = req.body;
     let varientNames = [];
     let varientSizes = [];
     for (let obj of varients) {
@@ -34,11 +34,11 @@ export const createMasterProduct = async (req, res, next) => {
       sk: categoryId,
       sk1: varientNames,
       sk2: varientSizes,
-      sk3: brandName,
+      sk3: brand,
       sk4: name,
       product_detail: {
         name,
-        brand: brandName,
+        brand,
         varients,
       },
       active: true,

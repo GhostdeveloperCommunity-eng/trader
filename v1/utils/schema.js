@@ -12,7 +12,7 @@ export const categoryObjectSchema = Joi.object({
     })
     .label("name"),
   description: Joi.string()
-    .required()
+    .default("")
     .label("description")
     .messages({
       "any.required": "The description of the category is required.",
@@ -132,7 +132,7 @@ const varientSchema = Joi.object({
 // Define the main schema
 export const masterProductSchema = Joi.object({
   categoryId: Joi.string().required(),
-  brandName: Joi.string().required(),
+  brand: Joi.string().required(),
   name: Joi.string().required(),
   varients: Joi.array().items(varientSchema).min(1).required(), // At least one variant required
 });

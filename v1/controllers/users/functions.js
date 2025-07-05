@@ -1,4 +1,4 @@
-import redisInstance from "../../../redisClient.js";
+// import redisInstance from "../../../redisClient.js";
 import CommonModel from "../../model/commonmodel.js";
 import jwt from "jsonwebtoken";
 import { generateOtp, jwtSignIn } from "../../utils/functions.js";
@@ -35,8 +35,8 @@ export const signupSendOtp = async (req, res, next) => {
     });
     const otp = generateOtp();
     const key = `${mobile}:${otp}:signup}`;
-    const response = await redisInstance.set(key, value, "EX", 300);
-    console.log("Redis Response", response);
+    // const response = await redisInstance.set(key, value, "EX", 300);
+    // console.log("Redis Response", response);
     res.status(200).json({
       code: 1,
       data: { otp },
@@ -128,12 +128,12 @@ export const loginOtp = async (req, res, next) => {
       email: response[0].sk,
       mobile: response[0].sk1,
     });
-    const redisResponse = await redisInstance.set(key, value, "EX", 300);
-    const getValue = await redisInstance.get(key);
+    // const redisResponse = await redisInstance.set(key, value, "EX", 300);
+    // const getValue = await redisInstance.get(key);
     return res.status(200).json({
       code: 1,
       message: "This is your otp",
-      data: { otp },
+      data: { message: "OTP sent successfully" },
     });
   } catch (error) {
     return res.status(200).json({
@@ -179,8 +179,9 @@ export const verifyLoginOtp = async (req, res, next) => {
       return;
     }
     const key = `${otp}:login`;
-    let value = await redisInstance.get(key);
-    value = JSON.parse(value);
+    // let value = await redisInstance.get(key);
+    let value = {};
+    // value = JSON.parse(value);
     if (!value || (value.email !== identity && value.mobile !== identity)) {
       throw {
         message: "Invalid otp",

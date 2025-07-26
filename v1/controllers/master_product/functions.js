@@ -1,50 +1,36 @@
+import CategoryModel from "../../model/categoryModel.js";
 import CommonModel from "../../model/commonmodel.js";
 import { v4 as uuidV4 } from "uuid";
+import MasterProductModel from "../../model/MasterModel.js";
 export const createMasterProduct = async (req, res, next) => {
   try {
     const { categoryId } = req.body;
-    const category = await CommonModel.findById(categoryId);
+    const category = await CategoryModel.findById(categoryId);
+
+    console.log(category)
+
     if (!category) {
       throw {
         status: 400,
         message: "Invalid Category",
       };
     }
-    const { pk } = category;
-    if (pk !== "CATEGORY#GENERAL") {
-      throw {
-        status: 400,
-        message: "Invalid Category",
-      };
-    }
-    const { brand, name, varients } = req.body;
-    let varientNames = [];
-    let varientSizes = [];
-    for (let obj of varients) {
-      obj.id = uuidV4();
-      obj.sizeMrp.forEach((sizeWithPriceObj) =>
-        varientSizes.push(sizeWithPriceObj.size)
-      );
-      varientNames.push(obj.name);
-    }
-    varientNames = [...new Set(varientNames)];
-    varientSizes = [...new Set(varientSizes)];
-    const response = await CommonModel.create({
-      pk: "MASTER#PRODUCT",
-      sk: categoryId,
-      sk1: varientNames,
-      sk2: varientSizes,
-      sk3: brand,
-      sk4: name,
-      product_detail: {
-        name,
-        brand,
-        varients,
-      },
+    const { brand, name, skuCode, subCategory, productSubCategory, size, mrp , images} =
+      req.body;
+   
+    const response = await MasterProductModel.create({
+      name,
+      brand,
+      skuCode,
       active: true,
+      subCategory,
+      productSubCategory,
+      size,
+      mrp,
+      images,
     });
     const data = {
-      ...response.product_detail,
+      ...response,
       masterProductId: response._id,
       categoryId,
     };
@@ -64,7 +50,7 @@ export const createMasterProduct = async (req, res, next) => {
 
 export const getAllMasterProduct = async (req, res, next) => {
   try {
-    const response = await CommonModel.find({ pk: "MASTER#PRODUCT" });
+    const response = await MasterProductModel.find();
     res.status(200).json({
       code: 1,
       data: response,

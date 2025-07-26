@@ -2,19 +2,18 @@ import Category from "../../../models/Category.js";
 import CommonModel from "../../model/commonmodel.js";
 import { S3Client } from "@aws-sdk/client-s3";
 import { uploadImageToS3 } from "../../utils/functions.js";
+import CategoryModel from "../../model/categoryModel.js";
 
 export const getCategories = async (req, res) => {
   try {
-    const categories = await CommonModel.find(
-      { pk: "CATEGORY#GENERAL" },
-      { details: 1, _id: 1 }
-    );
+    const categories = await CategoryModel.find();
+    console.log({categories})
     const prefixlink = `https://${process.env.BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/`;
     const customeResponse = categories.map((obj) => {
       return {
         _id: obj._id,
-        ...obj.details,
-        images: prefixlink + obj.details.images,
+        ...obj,
+        images: prefixlink + obj.images,
       };
     });
     res.status(200).json({
@@ -58,26 +57,20 @@ export const insertCategories = async (req, res) => {
       })
     );
     const insertQuery = req.body.items.forEach((object, i) => {
-      const { name, subCategory } = object;
       if (uploadResults[i].value !== null) {
         const categoryObject = {
-          pk: "CATEGORY#GENERAL", // Primary key identifying the category
-          sk: `CATEGORY#${name}`,
-          sk1: `${subCategory}`,
-          details: {
-            ...object,
-            images: uploadResults[i].value, // Array of general images representing this category
-          },
+          ...object,
+          images: uploadResults[i].value, // Array of general images representing this category
         };
         categoryToInsert.push(categoryObject);
       }
     });
-    const response = await CommonModel.insertMany(categoryToInsert);
+    const response = await CategoryModel.insertMany(categoryToInsert);
     const prefixlink = `https://${process.env.BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/`;
     const customeResponse = response.map((obj) => {
       return {
         _id: obj._id,
-        details: { ...obj.details, images: prefixlink + obj.details.images },
+        details: { ...obj, images: prefixlink + obj.images },
       };
     });
     res.status(200).json({

@@ -23,7 +23,6 @@ export const hofSchemaValidation = (schema) => {
   return async (req, res, next) => {
     try {
       const object = req.body;
-      console.log(req.body, "hhhhhhhhhhhhhhhhhhhhhh");
       const validateBody = await validateSchema(schema, object);
       req.body = validateBody;
       next();
@@ -79,11 +78,11 @@ export const parseFormData = (...args) => {
       // Loop through the properties using 'for...of'
       for (const property of args) {
         try {
-          console.log(req.body[property], "WWWWWWWWWWWWWWWW");
-          const value = JSON.parse(req.body[property]);
-          console.log(value, "VVVVVVVVVV");
+          const value =
+            typeof req.body[property] == "string"
+              ? JSON.parse(req.body[property])
+              : req.body[property];
           req.body[property] = value; // Update the req.body[property]
-          console.log(req.body, "AAAAAAAAAAQQQQQQQQQ", property);
         } catch (error) {
           throw {
             message: `${property} is not a valid JSON string`,
@@ -138,7 +137,6 @@ export const authorizer = async (req, res, next) => {
         message: "please send token in headers",
       };
     }
-    console.log("gfadjhdjhahj", token);
     const value = jwt.verify(token, process.env.JWT_SECRET);
     if (!value) {
       throw {

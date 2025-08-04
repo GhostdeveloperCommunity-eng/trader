@@ -1,0 +1,36 @@
+{
+    "CONSTANTS": {
+        "DATABASE_COLLECTIONS": {
+            "USER": "user",
+            "OTP": "otp",
+            "BRAND": "brand",
+            "CATEGORY": "category",
+            "MASTER": "master",
+            "PRODUCT": "product"
+        },
+        "DATABASE_COLLECTIONS_PLURAL": {
+            "USER": "users",
+            "OTP": "otps",
+            "BRAND": "brands",
+            "CATEGORY": "categories",
+            "MASTER": "masters",
+            "PRODUCT": "products"
+        },
+        "STATUS": {
+            "ACTIVE": "active",
+            "INACTIVE": "inactive"
+        },
+        "ROLES": {
+            "USER": "user",
+            "ADMIN": "admin",
+            "SELLER": "seller"
+        },
+        "OTP_TYPE": {
+            "REGISTER_USER_VERIFICATION": "register_user_verification"
+        }
+    },
+    "JWT_SECRET": "reierjuoreitn",
+    "JWT_ACCESS_TOKEN_EXPIRY": "720h",
+    "OTP_LENGTH": 4,
+    "OTP_EXPIRES_IN_MINUTES": 5
+}
